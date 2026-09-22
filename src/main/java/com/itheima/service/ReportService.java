@@ -1,0 +1,19 @@
+package com.itheima.service;
+
+
+import com.itheima.pojo.ClassOption;
+import com.itheima.pojo.JobOption;
+
+import java.util.List;
+import java.util.Map;
+
+public interface ReportService {
+    JobOption getEmpJobData();
+
+    List<Map> getGenderData();
+
+
+    ClassOption getClazzData();
+
+    List<Map> getEducationData();
+}

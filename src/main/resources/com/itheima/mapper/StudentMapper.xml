@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 和 Mapper接口全类名一致 -->
+<mapper namespace="com.itheima.mapper.StudentMapper">
+    <insert id="add">
+        insert into student(name,no,gender,phone,id_card,is_college,address,degree,graduation_date,clazz_id,update_time,create_time)
+        values (#{name},#{no},#{gender},#{phone},#{idCard},#{isCollege},#{address},#{degree},#{graduationDate},#{clazzId},#{updateTime},#{createTime})
+    </insert>
+    <update id="update">
+        update student
+        set name=#{name},
+            no=#{no},
+            gender=#{gender},
+            phone=#{phone},
+            id_card=#{idCard},
+            is_college=#{isCollege},
+            address=#{address},
+            degree=#{degree},
+            graduation_date=#{graduationDate},
+            violation_count=#{violationCount},
+            violation_score=#{violationScore},
+            clazz_id=#{clazzId},
+            update_time = now()
+        where id = #{id}
+    </update>
+    <delete id="deleteByIds">
+            delete from student where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="pageList" resultType="com.itheima.pojo.Student">
+        select s.*,c.name clazzName from student s left join clazz c on s.clazz_id = c.id
+        <where>
+            <if test="name != null and name != ''">
+                and s.name like concat('%',#{name},'%')
+            </if>
+            <if test="clazzId != null and clazzId != ''">
+                and s.clazz_id = #{clazzId}
+            </if>
+        </where>
+        order by c.update_time desc
+    </select>
+<!--    <select id="pageCount" resultType="java.lang.Integer">    -->
+<!--        select count(*) from student s left join class c on s.clazz_id = c.id-->
+<!--    </select>-->
+</mapper>
